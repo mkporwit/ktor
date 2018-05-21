@@ -8,6 +8,7 @@ import io.ktor.client.response.*
 import io.ktor.util.*
 import kotlinx.coroutines.experimental.*
 import java.io.*
+import java.util.*
 
 /**
  * Asynchronous client to perform HTTP requests.
@@ -27,6 +28,10 @@ class HttpClient private constructor(
         engineFactory: HttpClientEngineFactory<*>,
         block: suspend HttpClientConfig.() -> Unit = {}
     ) : this(engineFactory.create(), block)
+
+    constructor(
+        block: suspend HttpClientConfig.() -> Unit = {}
+    ) : this(findAvailableFactory(), block)
 
     /**
      * Pipeline used for processing all the requests sent by this client.
@@ -119,3 +124,10 @@ class HttpClient private constructor(
         }
     }
 }
+
+interface HttpClientEngineContainer {
+    val factory: HttpClientEngineFactory<*>
+}
+
+internal fun findAvailableFactory(): HttpClientEngineFactory<*> =
+    ServiceLoader.load(HttpClientEngineContainer::class.java).toList().first().factory
