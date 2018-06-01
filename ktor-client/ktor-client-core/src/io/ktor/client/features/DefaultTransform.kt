@@ -1,10 +1,9 @@
 package io.ktor.client.features
 
-import io.ktor.cio.*
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.response.*
-import io.ktor.content.*
+import io.ktor.http.content.*
 
 fun HttpClient.defaultTransformers() {
     requestPipeline.intercept(HttpRequestPipeline.Render) { body ->
@@ -16,10 +15,10 @@ fun HttpClient.defaultTransformers() {
         }
     }
 
-    responsePipeline.intercept(HttpResponsePipeline.Parse) { (type, content) ->
-        if (content !is HttpResponse) return@intercept
+    responsePipeline.intercept(HttpResponsePipeline.Parse) { (type, response) ->
+        if (response !is HttpResponse) return@intercept
         when (type) {
-            ByteArray::class -> proceedWith(HttpResponseContainer(type, content.content.toByteArray()))
+            ByteArray::class -> proceedWith(HttpResponseContainer(type, response.readBytes()))
         }
     }
 }

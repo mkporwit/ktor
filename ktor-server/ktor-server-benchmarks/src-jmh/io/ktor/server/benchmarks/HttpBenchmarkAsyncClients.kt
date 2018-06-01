@@ -1,5 +1,6 @@
 package io.ktor.server.benchmarks
 
+import io.ktor.*
 import io.ktor.client.*
 import io.ktor.client.cio.*
 import io.ktor.client.engine.*
@@ -26,7 +27,7 @@ class KtorBenchmarkClient(val engineFactory: HttpClientEngineFactory<*>) : Async
     private val parent = Job()
     private val done = AtomicInteger()
 
-    override fun setup() {
+    override fun setup() = runBlocking {
         done.set(0)
         httpClient = HttpClient(engineFactory)
     }

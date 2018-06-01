@@ -3,7 +3,7 @@ package io.ktor.jackson
 import com.fasterxml.jackson.databind.*
 import com.fasterxml.jackson.module.kotlin.*
 import io.ktor.application.*
-import io.ktor.content.*
+import io.ktor.http.content.*
 import io.ktor.features.*
 import io.ktor.http.*
 import io.ktor.pipeline.*

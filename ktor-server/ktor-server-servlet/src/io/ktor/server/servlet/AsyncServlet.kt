@@ -2,7 +2,7 @@ package io.ktor.server.servlet
 
 import io.ktor.application.*
 import io.ktor.cio.*
-import io.ktor.content.*
+import io.ktor.http.content.*
 import io.ktor.response.*
 import io.ktor.server.engine.*
 import kotlinx.coroutines.experimental.io.*
@@ -33,15 +33,7 @@ class AsyncServletApplicationRequest(
 
     private val copyJob by lazy { servletReader(servletRequest.inputStream) }
     @Suppress("OverridingDeprecatedMember", "DEPRECATION")
-    override fun receiveContent(): IncomingContent = AsyncServletIncomingContent(this, copyJob)
     override fun receiveChannel() = copyJob.channel
-}
-
-private class AsyncServletIncomingContent(
-    request: ServletApplicationRequest,
-    val copyJob: WriterJob
-) : ServletIncomingContent(request) {
-    override fun readChannel(): ByteReadChannel = copyJob.channel
 }
 
 open class AsyncServletApplicationResponse(

@@ -5,7 +5,7 @@ import io.ktor.cio.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.response.*
-import io.ktor.content.*
+import io.ktor.http.content.*
 import io.ktor.features.*
 import io.ktor.http.*
 import io.ktor.http.cio.*
@@ -805,7 +805,7 @@ abstract class EngineTestSuite<TEngine : ApplicationEngine, TConfiguration : App
         createAndStartServer {
             post("/") {
                 @Suppress("DEPRECATION")
-                call.respond(call.request.receiveContent().inputStream().reader().readText())
+                call.respond(call.request.receiveChannel().toInputStream().reader().readText())
             }
         }
 

@@ -7,6 +7,7 @@ import io.ktor.client.engine.*
 import io.ktor.client.request.*
 import io.ktor.client.response.*
 import io.ktor.client.tests.utils.*
+import io.ktor.compat.*
 import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
@@ -69,7 +70,7 @@ abstract class FullFormTest(private val factory: HttpClientEngineFactory<*>) : T
     }
 
     @Test
-    fun testRequest() {
+    fun testRequest() = runBlocking {
         val client = HttpClient(factory)
 
         val requestBuilder = request {

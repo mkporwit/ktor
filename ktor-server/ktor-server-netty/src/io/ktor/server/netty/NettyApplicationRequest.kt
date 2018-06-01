@@ -29,8 +29,6 @@ abstract class NettyApplicationRequest(
 
     override val cookies: RequestCookies = NettyApplicationRequestCookies(this)
 
-    @Suppress("OverridingDeprecatedMember", "DEPRECATION")
-    override fun receiveContent() = NettyHttpIncomingContent(this)
     override fun receiveChannel() = requestBodyChannel
 
     internal val contentChannelState = AtomicReference<ReadChannelState>(ReadChannelState.NEUTRAL)

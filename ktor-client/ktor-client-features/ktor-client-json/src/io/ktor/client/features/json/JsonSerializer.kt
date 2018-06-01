@@ -1,7 +1,7 @@
 package io.ktor.client.features.json
 
 import io.ktor.client.response.*
-import io.ktor.content.*
+import io.ktor.http.content.*
 import kotlin.reflect.*
 
 interface JsonSerializer {

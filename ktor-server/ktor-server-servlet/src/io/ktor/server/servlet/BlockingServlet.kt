@@ -2,7 +2,7 @@ package io.ktor.server.servlet
 
 import io.ktor.application.*
 import io.ktor.cio.*
-import io.ktor.content.*
+import io.ktor.http.content.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.server.engine.*
@@ -26,15 +26,7 @@ private class BlockingServletApplicationRequest(
     servletRequest: HttpServletRequest
 ) : ServletApplicationRequest(call, servletRequest) {
     @Suppress("OverridingDeprecatedMember", "DEPRECATION")
-    override fun receiveContent(): IncomingContent = BlockingServletIncomingContent(this)
     override fun receiveChannel() = servletRequest.inputStream.toByteReadChannel()
-}
-
-private class BlockingServletIncomingContent(
-    request: BlockingServletApplicationRequest
-) : ServletIncomingContent(request) {
-    override fun readChannel(): ByteReadChannel = inputStream().toByteReadChannel()
-    override fun inputStream(): InputStream = request.servletRequest.inputStream
 }
 
 private class BlockingServletApplicationResponse(

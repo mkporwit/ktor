@@ -45,7 +45,7 @@ abstract class PostTest(private val factory: HttpClientEngineFactory<*>) : TestW
         postHelper("$prefix: $builder")
     }
 
-    private fun postHelper(text: String) {
+    private fun postHelper(text: String) = runBlocking {
         val client = HttpClient(factory)
 
         val response = runBlocking {

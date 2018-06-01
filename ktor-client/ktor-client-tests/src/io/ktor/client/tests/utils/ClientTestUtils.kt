@@ -2,6 +2,7 @@ package io.ktor.client.tests.utils
 
 import io.ktor.client.*
 import io.ktor.client.engine.*
+import io.ktor.compat.*
 import kotlinx.coroutines.experimental.*
 
 fun <T : HttpClientEngineConfig> clientTest(

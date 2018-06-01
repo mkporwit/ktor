@@ -2,7 +2,7 @@ package io.ktor.client.features.json
 
 import com.google.gson.*
 import io.ktor.client.response.*
-import io.ktor.content.*
+import io.ktor.http.content.*
 import io.ktor.http.*
 import kotlin.reflect.*
 

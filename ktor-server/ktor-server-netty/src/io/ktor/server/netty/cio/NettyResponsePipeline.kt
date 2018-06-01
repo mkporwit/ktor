@@ -8,6 +8,7 @@ import io.netty.channel.*
 import io.netty.handler.codec.http.*
 import io.netty.handler.codec.http2.*
 import kotlinx.coroutines.experimental.*
+import kotlinx.coroutines.experimental.CancellationException
 import kotlinx.coroutines.experimental.channels.*
 import kotlinx.coroutines.experimental.io.*
 import java.io.*
