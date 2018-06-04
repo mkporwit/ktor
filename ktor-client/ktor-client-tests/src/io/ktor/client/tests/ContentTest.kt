@@ -29,6 +29,7 @@ open class ContentTest(private val factory: HttpClientEngineFactory<*>) : TestWi
         routing {
             post("/echo") {
                 val content = call.request.receiveChannel().toByteArray()
+                val headers = call.request.headers
                 call.respond(content)
             }
         }
@@ -78,7 +79,4 @@ open class ContentTest(private val factory: HttpClientEngineFactory<*>) : TestWi
             }
         }
     }
-
-    private fun makeArray(size: Int): ByteArray = buildPacket { repeat(size) { writeByte(it.toByte()) } }.readBytes()
-    private fun makeString(size: Int): String = buildString { repeat(size) { append(it.toChar()) } }
 }

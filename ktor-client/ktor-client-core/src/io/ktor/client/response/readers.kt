@@ -15,7 +15,7 @@ suspend fun HttpResponse.readBytes(count: Int): ByteArray =
  * Otherwise it just reads one byte.
  */
 suspend fun HttpResponse.readBytes(): ByteArray =
-    content.toByteArray(contentLength() ?: 1)
+    content.toByteArray(contentLength() ?: Int.MAX_VALUE)
 
 /**
  * Efficiently discards the remaining bytes of [HttpResponse.content].

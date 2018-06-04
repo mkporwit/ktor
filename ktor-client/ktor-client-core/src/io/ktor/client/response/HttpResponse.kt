@@ -62,10 +62,7 @@ interface HttpResponse : HttpMessage, Closeable {
  * Note that [charset] parameter will be ignored if the response already has a charset.
  *      So it just acts as a fallback, honoring the server preference.
  */
-suspend fun HttpResponse.readText(
-    charset: Charset? = null,
-    pool: ObjectPool<ByteBuffer> = HttpClientDefaultPool
-): String {
-    val length = headers[HttpHeaders.ContentLength]?.toInt() ?: 1
-    return content.toByteArray(length, pool).toString(charset() ?: charset ?: Charsets.ISO_8859_1)
+suspend fun HttpResponse.readText(charset: Charset? = null): String {
+    val length = headers[HttpHeaders.ContentLength]?.toInt() ?: Int.MAX_VALUE
+    return content.toByteArray(length).toString(charset() ?: charset ?: Charsets.ISO_8859_1)
 }
