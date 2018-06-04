@@ -48,9 +48,7 @@ abstract class PostTest(private val factory: HttpClientEngineFactory<*>) : TestW
     private fun postHelper(text: String) = runBlocking {
         val client = HttpClient(factory)
 
-        val response = runBlocking {
-            client.post<String>(port = serverPort, body = text)
-        }
+        val response = client.post<String>(port = serverPort, body = text)
 
         assertEquals(text, response)
         client.close()

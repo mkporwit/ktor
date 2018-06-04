@@ -14,7 +14,34 @@ import kotlinx.coroutines.experimental.*
  *
  * This is a generic implementation that uses a specific engine [HttpClientEngine].
  */
-class HttpClient internal constructor(private val engine: HttpClientEngine) : Closeable {
+class HttpClient constructor(
+    private val engine: HttpClientEngine,
+    config: HttpClientConfig
+) : Closeable {
+
+    /**
+     * Constructs an asynchronous [HttpClient] using the specified [engine] instance
+     * and an optional [block] for configuring this client.
+     */
+    constructor(
+        engine: HttpClientEngine,
+        block: HttpClientConfig.() -> Unit = {}
+    ) : this(engine, HttpClientConfig().apply {
+        install(HttpPlainText)
+        install(HttpIgnoreBody)
+        install("DefaultTransformers") { defaultTransformers() }
+        block()
+    })
+
+    /**
+     * Constructs an asynchronous [HttpClient] using the specified [engineFactory]
+     * and an optional [block] for configuring this client.
+     */
+    constructor(
+        engineFactory: HttpClientEngineFactory<*>,
+        block: HttpClientConfig.() -> Unit = {}
+    ) : this(engineFactory.create(), block)
+
     /**
      * Pipeline used for processing all the requests sent by this client.
      */
@@ -65,6 +92,10 @@ class HttpClient internal constructor(private val engine: HttpClientEngine) : Cl
      */
     val dispatcher: CoroutineDispatcher = engine.dispatcher
 
+    init {
+        config.install(this)
+    }
+
     /**
      * Creates a new [HttpRequest] from a request [data] and a specific client [call].
      */
@@ -75,9 +106,7 @@ class HttpClient internal constructor(private val engine: HttpClientEngine) : Cl
      * Returns a new [HttpClient] copying this client configuration,
      * and additionally configured by the [block] parameter.
      */
-    suspend fun config(block: suspend HttpClientConfig.() -> Unit): HttpClient = HttpClient(engine, block)
-
-    internal val config: HttpClientConfig = HttpClientConfig()
+    fun config(block: HttpClientConfig.() -> Unit): HttpClient = HttpClient(engine, block)
 
     /**
      * Closes the underlying [engine].
@@ -94,24 +123,4 @@ class HttpClient internal constructor(private val engine: HttpClientEngine) : Cl
             }
         }
     }
-}
-
-/**
- * Constructs an asynchronous [HttpClient] using the specified [engineFactory]
- * and an optional [block] for configuring this client.
- */
-suspend fun HttpClient(
-    engineFactory: HttpClientEngineFactory<*>,
-    block: suspend HttpClientConfig.() -> Unit = {}
-): HttpClient = HttpClient(engineFactory.create(), block)
-
-internal suspend fun HttpClient(
-    engine: HttpClientEngine,
-    block: suspend HttpClientConfig.() -> Unit = {}
-): HttpClient = HttpClient(engine).apply {
-    config.install(HttpPlainText)
-    config.install(HttpIgnoreBody)
-    config.install("DefaultTransformers") { defaultTransformers() }
-    config.block()
-    config.install(this)
 }

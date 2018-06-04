@@ -20,7 +20,7 @@ internal class TestHandler(
     companion object Feature : HttpClientFeature<Config, TestHandler> {
         override val key: AttributeKey<TestHandler> = AttributeKey("Buffer")
 
-        override suspend fun prepare(block: Config.() -> Unit): TestHandler =
+        override fun prepare(block: Config.() -> Unit): TestHandler =
             Config().apply(block).let { TestHandler(it.onClose) }
 
         override fun install(feature: TestHandler, scope: HttpClient) {
