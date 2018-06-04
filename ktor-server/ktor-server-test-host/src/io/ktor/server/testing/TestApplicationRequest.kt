@@ -7,6 +7,7 @@ import io.ktor.request.*
 import io.ktor.server.engine.*
 import io.ktor.util.*
 import kotlinx.coroutines.experimental.io.*
+import kotlinx.coroutines.experimental.io.ByteReadChannel.*
 
 class TestApplicationRequest(
         call: ApplicationCall,
@@ -40,7 +41,7 @@ class TestApplicationRequest(
     }
 
     @Volatile
-    var bodyChannel: ByteReadChannel = EmptyByteReadChannel
+    var bodyChannel: ByteReadChannel = ByteReadChannel.Empty
 
     @Deprecated("Use setBody() method instead", ReplaceWith("setBody()"))
     var bodyBytes: ByteArray

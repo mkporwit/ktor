@@ -10,6 +10,7 @@ import io.ktor.server.testing.*
 import io.ktor.util.*
 import kotlinx.coroutines.experimental.*
 import kotlinx.coroutines.experimental.io.*
+import kotlinx.coroutines.experimental.io.ByteReadChannel.*
 import java.util.concurrent.*
 
 class TestHttpClientEngine(private val app: TestApplicationEngine) : HttpClientEngine {
@@ -67,7 +68,7 @@ class TestHttpClientEngine(private val app: TestApplicationEngine) : HttpClientE
     }
 
     private fun OutgoingContent.toByteReadChannel(): ByteReadChannel = when (this) {
-        is OutgoingContent.NoContent -> EmptyByteReadChannel
+        is OutgoingContent.NoContent -> ByteReadChannel.Empty
         is OutgoingContent.ByteArrayContent -> ByteReadChannel(bytes())
         is OutgoingContent.ReadChannelContent -> readFrom()
         is OutgoingContent.WriteChannelContent -> runBlocking {

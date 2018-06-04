@@ -4,6 +4,7 @@ import io.ktor.compat.*
 import io.ktor.http.cio.*
 import kotlinx.coroutines.experimental.*
 import kotlinx.coroutines.experimental.io.*
+import kotlinx.coroutines.experimental.io.ByteReadChannel.*
 import kotlinx.io.streams.*
 import org.junit.Test
 import java.io.*
@@ -93,7 +94,7 @@ class ChunkedTest {
 
         launch(coroutineContext) {
             try {
-                encodeChunked(encoded, EmptyByteReadChannel)
+                encodeChunked(encoded, ByteReadChannel.Empty)
             } finally {
                 encoded.close()
             }
