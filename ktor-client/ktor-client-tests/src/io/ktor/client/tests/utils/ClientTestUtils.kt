@@ -17,13 +17,13 @@ fun <T : HttpClientEngineConfig> clientTest(
 
 class TestClientBuilder(
     var config: suspend HttpClientConfig.() -> Unit = {},
-    var test: suspend (HttpClient) -> Unit = {}
+    var test: suspend (client: HttpClient) -> Unit = {}
 )
 
 fun TestClientBuilder.config(block: suspend HttpClientConfig.() -> Unit): Unit {
     config = block
 }
 
-fun TestClientBuilder.test(block: suspend (HttpClient) -> Unit): Unit {
+fun TestClientBuilder.test(block: suspend (client: HttpClient) -> Unit): Unit {
     test = block
 }
