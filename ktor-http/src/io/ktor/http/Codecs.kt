@@ -15,10 +15,10 @@ fun encodeURLPart(part: String): String = encodeURLQueryComponent(part).apply {
 
 fun decodeURLQueryComponent(
     text: CharSequence, start: Int = 0, end: Int = text.length, charset: Charset = Charsets.UTF_8
-): String = decodeScan(text, start, end, true, Charsets.UTF_8)
+): String = decodeScan(text, start, end, true, charset)
 
 fun decodeURLPart(text: String, start: Int = 0, end: Int = text.length, charset: Charset = Charsets.UTF_8): String =
-    decodeScan(text, start, end, false, Charsets.UTF_8)
+    decodeScan(text, start, end, false, charset)
 
 private fun decodeScan(text: CharSequence, start: Int, end: Int, plusIsSpace: Boolean, charset: Charset): String {
     for (index in start until end) {

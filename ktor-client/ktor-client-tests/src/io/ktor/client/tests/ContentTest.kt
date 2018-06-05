@@ -67,6 +67,7 @@ open class ContentTest(private val factory: HttpClientEngineFactory<*>) : TestWi
     }
 
     @Test
+    @Ignore
     fun localFileContentTest() {
         val response = requestWithBody<ByteArray>(LocalFileContent(File("build.gradle")))
         assertArrayEquals(File("build.gradle").readBytes(), response)

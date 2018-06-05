@@ -60,7 +60,6 @@ interface HttpResponse : HttpMessage, Closeable {
  *      So it just acts as a fallback, honoring the server preference.
  */
 suspend fun HttpResponse.readText(charset: Charset? = null): String {
-    val length = headers[HttpHeaders.ContentLength]?.toInt() ?: 1
-    val packet = content.readRemaining(Long.MAX_VALUE, length).readBytes()
+    val packet = content.readRemaining(Long.MAX_VALUE).readBytes()
     return String(packet, charset = charset() ?: charset ?: Charset.forName("ISO_8859_1"))
 }
