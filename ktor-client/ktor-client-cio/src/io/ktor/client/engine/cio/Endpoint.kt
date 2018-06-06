@@ -100,7 +100,13 @@ internal class Endpoint(
             }
         }
 
-        request.write(output)
+        launch(dispatcher) {
+            try {
+                request.write(output)
+            } catch(cause: Throwable) {
+                closeConnection(cause)
+            }
+        }
 
         val response = parseResponse(input) ?: throw EOFException("Failed to parse HTTP response: unexpected EOF")
 
